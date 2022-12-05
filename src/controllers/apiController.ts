@@ -1,6 +1,6 @@
 import{Request,Response} from 'express'
 
-import {Frase} from '../models/Frase'
+import { Phrase } from '../models/Phrase'
 
 export const ping = (req:Request, res:Response) =>{
     res.json({pong:true})
@@ -18,28 +18,52 @@ export const nome = (req:Request,res:Response) =>{
     res.json({nome:`Você enviou o nome: ${nome}`})
 }
 
-export const createFrase = async (req:Request,res:Response) =>{
+export const createPhrase = async (req:Request,res:Response) =>{
     let {autor, txt} = req.body
 
-    let newFrase = await Frase.create({autor,txt})
+    let newFrase = await Phrase.create({autor,txt})
 
     res.json({id: newFrase.id, autor, txt})
 
 }
 
-export const listFrases = async (req:Request, res:Response) =>{
-    let list = await Frase.findAll()
+export const listPhrases = async (req:Request, res:Response) =>{
+    let list = await Phrase.findAll()
     res.json({list})
 }
 
-export const getFrase =async (req:Request, res:Response) => {
+export const getPhrase =async (req:Request, res:Response) => {
     let {id} = req.params
 
-    let frase = await Frase.findByPk(id)
+    let frase = await Phrase.findByPk(id)
 
     if(frase){
         res.json({frase})
     }else{
         res.json({error:'Frase Não existe!'})
     }
+}
+
+export const updatePhrase = async (req:Request, res:Response) =>{
+    let {id} = req.params
+    let {author, txt} = req.body
+
+    let phrase = await Phrase.findByPk(id)
+
+    if(phrase) {
+        phrase.author = author
+        phrase.txt = txt
+        
+        await phrase.save()
+
+        res.json({phrase})
+    }else{
+        res.json({error: 'Frase não encontrada'})
+    }
+}
+
+export const deletePhrase = async (req:Request, res:Response) =>{
+        let {id} = req.params
+        await Phrase.destroy({ where: {id} })
+        res.json({})
 }

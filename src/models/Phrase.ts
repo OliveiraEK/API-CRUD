@@ -8,19 +8,19 @@ export interface FraseInstance extends Model{
     txt: string
 }
 
-export const Frase = sequelize.define<FraseInstance>('Frase',{
+export const Phrase = sequelize.define<FraseInstance>('Frase',{
     id:{
         primaryKey:true,
         autoIncrement:true,
         type:DataTypes.INTEGER
     },
-    autor:{
+    author:{
         type:DataTypes.STRING
     },
     txt:{
         type:DataTypes.STRING
     }
 },{
-    tableName:'frases',
+    tableName:'phrases',
     timestamps:false
 })
